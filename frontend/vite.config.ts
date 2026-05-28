@@ -59,6 +59,12 @@ const proxyConfig: ServerOptions['proxy'] = {
 export default defineConfig({
   plugins: [react()],
 
+  // In production Django serves index.html and WhiteNoise serves /static/...
+  // Setting base to '/static/' makes Vite embed the correct prefix in all
+  // asset URLs inside index.html so they match WhiteNoise's STATIC_URL.
+  // The Vite dev server is unaffected — it rewrites paths transparently.
+  base: process.env.NODE_ENV === 'production' ? '/static/' : '/',
+
   server: {
     port:  5173,
     proxy: proxyConfig,

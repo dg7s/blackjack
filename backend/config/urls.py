@@ -8,16 +8,31 @@ Mount strategy
     /api/v1/   ← all REST endpoints  (game.urls.api_urlpatterns)
     /sse/      ← SSE leaderboard     (game.urls.sse_urlpatterns)
     /admin/    ← Django admin panel
-
-The separation of /api/v1/ and /sse/ prefixes makes it trivial to put
-the SSE endpoint on a different Gunicorn worker class or process in
-production if needed (e.g. gevent workers only for /sse/).
+    /*         ← catch-all → serves React SPA index.html
 """
 
+from pathlib import Path
+
+from django.conf import settings
 from django.contrib import admin
-from django.urls import include, path
+from django.http import FileResponse, HttpResponse
+from django.urls import include, path, re_path
 
 from game.urls import api_urlpatterns, sse_urlpatterns
+
+
+def spa_index(request, **kwargs):
+    """Serve the React SPA for any route not matched by the API or admin."""
+    index_path = Path(settings.STATIC_ROOT) / "index.html"
+    if index_path.exists():
+        return FileResponse(index_path.open("rb"), content_type="text/html")
+    return HttpResponse(
+        "<h1>Frontend not built.</h1>"
+        "<p>Run <code>cd frontend && npm run build</code> then "
+        "<code>python manage.py collectstatic</code>.</p>",
+        status=404,
+    )
+
 
 urlpatterns = [
     # Django admin
@@ -28,4 +43,9 @@ urlpatterns = [
 
     # SSE stream  →  /sse/leaderboard/{table_id}/?token=...
     path("sse/", include((sse_urlpatterns, "sse"), namespace="sse")),
+
+    # Catch-all: serve the React SPA index.html for all other routes.
+    # WhiteNoise middleware intercepts /static/... before this ever fires,
+    # so static assets are never passed through here.
+    re_path(r"^.*$", spa_index),
 ]
