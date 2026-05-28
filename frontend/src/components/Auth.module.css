@@ -1,0 +1,221 @@
+/* src/components/Auth.module.css */
+
+.page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 0%,   rgba(21,107,60,0.55) 0%, transparent 70%),
+    radial-gradient(ellipse 60% 40% at 50% 100%, rgba(10,30,15,0.8)  0%, transparent 70%),
+    var(--felt-deep);
+  padding: 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ── Decorative corner ornaments ─────────────────────────────────────────────── */
+.ornamentTL,
+.ornamentBR {
+  position: absolute;
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.ornamentTL {
+  top: -120px; left: -120px;
+  background: radial-gradient(circle, rgba(240,192,64,0.07) 0%, transparent 70%);
+  border: 1px solid rgba(240,192,64,0.08);
+}
+
+.ornamentBR {
+  bottom: -120px; right: -120px;
+  background: radial-gradient(circle, rgba(240,192,64,0.05) 0%, transparent 70%);
+  border: 1px solid rgba(240,192,64,0.06);
+}
+
+/* ── Card container ──────────────────────────────────────────────────────────── */
+.card {
+  background: var(--surface-1);
+  border: 1px solid var(--surface-border);
+  border-radius: 16px;
+  width: 100%;
+  max-width: 400px;
+  overflow: hidden;
+  box-shadow:
+    0 24px 80px rgba(0,0,0,0.6),
+    0 0 0 1px rgba(240,192,64,0.08),
+    inset 0 1px 0 rgba(255,255,255,0.06);
+  animation: fadeUp 0.5s var(--ease-smooth) both;
+}
+
+/* ── Header ──────────────────────────────────────────────────────────────────── */
+.header {
+  padding: 32px 32px 24px;
+  text-align: center;
+  border-bottom: 1px solid rgba(240,192,64,0.12);
+  background: linear-gradient(180deg, rgba(240,192,64,0.05) 0%, transparent 100%);
+}
+
+.suitRow {
+  font-size: 18px;
+  letter-spacing: 10px;
+  color: var(--gold-mid);
+  opacity: 0.7;
+  margin-bottom: 10px;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: 30px;
+  font-weight: 700;
+  color: var(--gold-text);
+  letter-spacing: 1px;
+  text-shadow: 0 2px 12px rgba(240,192,64,0.3);
+}
+
+.subtitle {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-top: 6px;
+}
+
+/* ── Tabs ─────────────────────────────────────────────────────────────────────── */
+.tabs {
+  display: flex;
+  border-bottom: 1px solid rgba(240,192,64,0.12);
+}
+
+.tab {
+  flex: 1;
+  padding: 14px;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  border-bottom: 2px solid transparent;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.tab:hover { color: var(--text-primary); }
+
+.tabActive {
+  color: var(--gold-text);
+  border-bottom-color: var(--gold-bright);
+}
+
+/* ── Form ─────────────────────────────────────────────────────────────────────── */
+.form {
+  padding: 28px 32px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.input {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px;
+  padding: 11px 14px;
+  color: var(--text-primary);
+  font-size: 14px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.input:focus {
+  border-color: rgba(240,192,64,0.5);
+  box-shadow: 0 0 0 3px rgba(240,192,64,0.1);
+  background: rgba(255,255,255,0.06);
+}
+
+.inputError {
+  border-color: rgba(231,76,60,0.6);
+}
+
+.fieldError {
+  font-size: 12px;
+  color: #e74c3c;
+}
+
+.errorBanner {
+  background: rgba(231,76,60,0.15);
+  border: 1px solid rgba(231,76,60,0.35);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 13px;
+  color: #ff7b6b;
+}
+
+.startBalance {
+  font-size: 12px;
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+.startBalance strong {
+  color: var(--gold-text);
+}
+
+/* ── Submit button ───────────────────────────────────────────────────────────── */
+.submitBtn {
+  margin-top: 4px;
+  padding: 14px;
+  background: linear-gradient(135deg, var(--gold-mid) 0%, var(--gold-bright) 100%);
+  color: #1a0f00;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  border-radius: 8px;
+  transition: opacity 0.2s, transform 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+}
+
+.submitBtn:hover:not(:disabled) {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.submitBtn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.submitBtn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* ── Spinner ──────────────────────────────────────────────────────────────────── */
+.spinner {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(26,15,0,0.3);
+  border-top-color: rgba(26,15,0,0.9);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}

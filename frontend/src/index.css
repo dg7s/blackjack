@@ -1,0 +1,150 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   index.css — Art Deco Casino theme
+   Global CSS custom properties, reset, base styles, and shared keyframes.
+   All component-specific styles live in their respective .module.css files.
+   ───────────────────────────────────────────────────────────────────────────── */
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&display=swap');
+
+/* ── Custom Properties ─────────────────────────────────────────────────────── */
+
+:root {
+  /* Felt (game table background) */
+  --felt-deep:  #062010;                   /* darkest — outer edges, deep shadows  */
+  --felt-mid:   #0c3a1e;                   /* mid-tone — radial gradient midpoint  */
+  --felt-light: #156b3c;                   /* brightest — table centre highlight   */
+
+  /* UI surface layers */
+  --surface-1:      #0d1824;               /* panels, overlays, card backgrounds   */
+  --surface-2:      #14223a;               /* slightly raised surfaces             */
+  --surface-border: rgba(255, 255, 255, 0.08);
+
+  /* Playing cards */
+  --card-bg:     #fdfaf2;                  /* warm white — like real card stock    */
+  --card-border: rgba(0, 0, 0, 0.18);
+  --card-shadow: rgba(0, 0, 0, 0.40);
+  --card-back-a: #1a2a6c;                  /* card-back gradient: deep blue        */
+  --card-back-b: #b21f1f;                  /* card-back gradient: deep red         */
+  --card-red:    #cc1a1a;                  /* Hearts / Diamonds                    */
+  --card-black:  #111111;                  /* Spades  / Clubs                      */
+
+  /* Gold (Art Deco accent) */
+  --gold-bright: #f0c040;
+  --gold-mid:    #c8a030;
+  --gold-dim:    #9a7820;
+  --gold-text:   #e8c060;                  /* legible gold on dark surfaces        */
+
+  /* Outcome indicator colours */
+  --win:       #2ecc71;                    /* emerald green */
+  --lose:      #e74c3c;                    /* crimson       */
+  --push:      #f39c12;                    /* amber         */
+  --blackjack: #f0c040;                    /* gold          */
+
+  /* Typography */
+  --font-display: 'Playfair Display', 'Georgia', 'Palatino Linotype', serif;
+  --font-ui:      system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+
+  /* Text */
+  --text-primary:   #e8e0d0;
+  --text-secondary: rgba(220, 210, 195, 0.65);
+  --text-muted:     rgba(220, 210, 195, 0.35);
+
+  /* Easing curves */
+  --ease-snap:   cubic-bezier(0.32, 0.72, 0, 1);    /* fast-out, snappy feel */
+  --ease-smooth: cubic-bezier(0.40, 0.00, 0.2, 1);  /* material ease-in-out  */
+}
+
+/* ── Reset ──────────────────────────────────────────────────────────────────── */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+button {
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: inherit;
+}
+
+button:focus-visible {
+  outline: 2px solid var(--gold-bright);
+  outline-offset: 2px;
+}
+
+input {
+  font-family: inherit;
+}
+
+input:focus {
+  outline: none;
+}
+
+ol, ul {
+  list-style: none;
+}
+
+/* ── Base ───────────────────────────────────────────────────────────────────── */
+
+html, body {
+  height: 100%;
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color-scheme: dark;
+}
+
+body {
+  font-family: var(--font-ui);
+  background: var(--felt-deep);
+  color: var(--text-primary);
+  text-rendering: optimizeLegibility;
+}
+
+/* ── Root container ─────────────────────────────────────────────────────────── */
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Shared keyframes ───────────────────────────────────────────────────────── */
+/* Defined globally so CSS Modules references (without a local @keyframes)      */
+/* pass through unscoped and resolve here.                                       */
+
+@keyframes dealIn {
+  from { opacity: 0; transform: translateY(20px) scale(0.9); }
+  to   { opacity: 1; transform: translateY(0)    scale(1);   }
+}
+
+@keyframes flipIn {
+  0%   { opacity: 0; transform: rotateY(90deg) scale(0.85); }
+  55%  { transform: rotateY(-8deg) scale(1.02); }
+  100% { opacity: 1; transform: rotateY(0deg)  scale(1);    }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -400px 0; }
+  100% { background-position:  400px 0; }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pulseBorder {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.4; }
+}

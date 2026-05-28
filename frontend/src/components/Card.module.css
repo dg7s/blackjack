@@ -1,0 +1,135 @@
+/* src/components/Card.module.css */
+
+/* ── Base card ─────────────────────────────────────────────────────────────── */
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: stretch;
+  width:  72px;
+  height: 100px;
+  border-radius: 7px;
+  flex-shrink: 0;
+  user-select: none;
+  transition: transform 0.15s var(--ease-snap);
+}
+
+.card:hover {
+  transform: translateY(-4px);
+}
+
+.small {
+  width:  54px;
+  height: 76px;
+  border-radius: 5px;
+}
+
+/* ── Face-up ────────────────────────────────────────────────────────────────── */
+.faceUp {
+  background: var(--card-bg);
+  border: 1.5px solid var(--card-border);
+  box-shadow:
+    0 4px 12px var(--card-shadow),
+    0 1px 3px rgba(0,0,0,0.3),
+    inset 0 1px 0 rgba(255,255,255,0.9);
+  padding: 4px 5px;
+}
+
+.small.faceUp {
+  padding: 3px 4px;
+}
+
+/* ── Corners ────────────────────────────────────────────────────────────────── */
+.corner {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  line-height: 1;
+  font-family: var(--font-display);
+}
+
+.cornerBottom {
+  align-self: flex-end;
+  transform: rotate(180deg);
+}
+
+.cornerRank {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.cornerSuit {
+  font-size: 11px;
+  margin-top: -1px;
+}
+
+.small .cornerRank { font-size: 11px; }
+.small .cornerSuit { font-size: 9px; }
+
+/* ── Centre suit ────────────────────────────────────────────────────────────── */
+.center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 26px;
+  line-height: 1;
+  opacity: 0.15;
+  pointer-events: none;
+}
+
+.small .center { font-size: 20px; }
+
+/* ── Face-down back ─────────────────────────────────────────────────────────── */
+.faceDown {
+  background: linear-gradient(135deg, var(--card-back-a) 0%, var(--card-back-b) 100%);
+  border: 1.5px solid rgba(255,255,255,0.15);
+  box-shadow:
+    0 4px 12px var(--card-shadow),
+    0 1px 3px rgba(0,0,0,0.4),
+    inset 0 1px 0 rgba(255,255,255,0.1);
+  overflow: hidden;
+}
+
+.backPattern {
+  position: absolute;
+  inset: 5px;
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Repeating diagonal lines — classic casino card back */
+  background-image: repeating-linear-gradient(
+    45deg,
+    rgba(255,255,255,0.04) 0px,
+    rgba(255,255,255,0.04) 2px,
+    transparent 2px,
+    transparent 10px
+  );
+}
+
+.backDiamond {
+  width: 28px;
+  height: 28px;
+  background: rgba(255,255,255,0.12);
+  transform: rotate(45deg);
+  border: 1px solid rgba(255,255,255,0.25);
+}
+
+.small .backDiamond {
+  width: 20px;
+  height: 20px;
+}
+
+/* ── Deal-in animation ──────────────────────────────────────────────────────── */
+.dealIn {
+  animation: dealIn 0.35s var(--ease-snap) both;
+}
+
+/* ── Flip-in animation (for hole card reveal) ───────────────────────────────── */
+.flipIn {
+  animation: flipIn 0.45s var(--ease-smooth) both;
+}
