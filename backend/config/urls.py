@@ -45,7 +45,5 @@ urlpatterns = [
     path("sse/", include((sse_urlpatterns, "sse"), namespace="sse")),
 
     # Catch-all: serve the React SPA index.html for all other routes.
-    # WhiteNoise middleware intercepts /static/... before this ever fires,
-    # so static assets are never passed through here.
     re_path(r"^.*$", spa_index),
 ]

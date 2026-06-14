@@ -59,8 +59,8 @@ INSTALLED_APPS: list[str] = [
 
 MIDDLEWARE: list[str] = [
     "django.middleware.security.SecurityMiddleware",
-    "whitenoise.middleware.WhiteNoiseMiddleware",   # Must come right after SecurityMiddleware
-    "corsheaders.middleware.CorsMiddleware",        # Must come before CommonMiddleware
+    "whitenoise.middleware.WhiteNoiseMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -92,11 +92,10 @@ TEMPLATES = [
 
 
 # ── Database ─────────────────────────────────────────────────────────────────────
-# SQLite for local dev; switch to Postgres on Render by setting DATABASE_URL.
+# SQLite for local dev; Postgres on Render.
 _database_url = os.environ.get("DATABASE_URL", "")
 
 if _database_url:
-    # Production: parse the DATABASE_URL provided by Render
     # Requires dj-database-url:  pip install dj-database-url
     import dj_database_url  # type: ignore[import]
     DATABASES = {
@@ -119,19 +118,6 @@ DEFAULT_AUTO_FIELD: str = "django.db.models.BigAutoField"
 
 
 # ── Cache ────────────────────────────────────────────────────────────────────────
-# LocMemCache is fine for a single-process dev server.
-# In production on Render (where multiple Gunicorn workers run), use Redis so
-# the dirty flag set by one worker is visible to the SSE worker.
-#
-# Redis setup (optional for single-worker Render deployment):
-#     pip install django-redis
-#     CACHES = {
-#         "default": {
-#             "BACKEND": "django_redis.cache.RedisCache",
-#             "LOCATION": os.environ["REDIS_URL"],
-#             "OPTIONS": {"CLIENT_CLASS": "django_redis.client.DefaultClient"},
-#         }
-#     }
 CACHES = {
     "default": {
         "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
@@ -160,8 +146,6 @@ REST_FRAMEWORK: dict = {
     ],
     "DEFAULT_RENDERER_CLASSES": [
         "rest_framework.renderers.JSONRenderer",
-        # BrowsableAPIRenderer is useful during development — remove in production
-        # to reduce surface area.
         "rest_framework.renderers.BrowsableAPIRenderer",
     ],
     "DEFAULT_THROTTLE_CLASSES": [
@@ -188,8 +172,6 @@ CORS_ALLOWED_ORIGINS: list[str] = [
     _frontend_url,
 ]
 
-# SSE streams need credentials (auth token) — but since we use a query param,
-# CORS_ALLOW_CREDENTIALS is not strictly necessary. Set True if you add cookies.
 CORS_ALLOW_CREDENTIALS: bool = False
 
 
@@ -197,17 +179,12 @@ CORS_ALLOW_CREDENTIALS: bool = False
 STATIC_URL: str = "/static/"
 STATIC_ROOT: str = str(BASE_DIR / "staticfiles")
 
-# Django 4.2+: use STORAGES instead of the deprecated STATICFILES_STORAGE setting.
 STORAGES: dict = {
     "staticfiles": {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     }
 }
 
-# If serving the React build from Django, the Vite build outputs to
-# <repo-root>/dist (see frontend/vite.config.ts).  collectstatic copies
-# everything in STATICFILES_DIRS into STATIC_ROOT for WhiteNoise to serve.
-# The directory only exists after `npm run build`, so we skip it when absent.
 _FRONTEND_DIST = BASE_DIR.parent / "dist"
 STATICFILES_DIRS: list = [_FRONTEND_DIST] if _FRONTEND_DIST.is_dir() else []
 
