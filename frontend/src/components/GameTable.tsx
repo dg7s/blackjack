@@ -248,7 +248,6 @@ export default function GameTable({ tableId, table, onLeaveTable }: GameTablePro
     setHolePlaceholderVisible(false);
     setDealerHoleRevealed(false);
 
-    // Fix 4: start counter at shoe_after_deal + cards_being_dealt so it ticks down per card
     const totalDealt = game.player_hand.cards.length + game.dealer_hand.cards.length
       + game.bot_hands.reduce((s, b) => s + b.cards.length, 0);
     setDisplayCardsRemaining(game.cards_remaining + totalDealt);
