@@ -635,21 +635,11 @@ class SSELeaderboardView(View):
     Long-lived Server-Sent Events endpoint that streams leaderboard updates
     for a specific table.
 
-    Why not a DRF APIView?
-    ----------------------
-    DRF wraps responses in its own request/response cycle which finalizes the
-    response before streaming.  Django's base View + StreamingHttpResponse is
-    the correct primitive here.  We handle authentication manually.
-
     Authentication
     --------------
     The browser's EventSource API does NOT support custom request headers,
     so the DRF token is passed as a query parameter:
         GET /sse/leaderboard/1/?token=9944b09199c62bcf...
-
-    This is an accepted trade-off for SSE.  The endpoint is authenticated
-    (invalid/missing tokens get a 401) and operates over HTTPS in production,
-    so the token-in-URL pattern is safe in practice.
 
     Required response headers
     -------------------------
