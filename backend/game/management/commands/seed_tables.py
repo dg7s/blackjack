@@ -112,7 +112,6 @@ class Command(BaseCommand):
             )
 
             # Initialise the shoe only when first created or when empty
-            # (never reset a shoe that already has cards — that would cheat players).
             if created or not obj.shoe_state:
                 obj.shoe_state = build_shoe_with_cut()
                 obj.save(update_fields=["shoe_state"])
