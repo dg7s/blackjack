@@ -5,21 +5,6 @@ URL routing for the ``game`` Django app.
 
 This file is included by the project-level ``config/urls.py``.
 
-Wiring (add to config/urls.py)
--------------------------------
-    from django.urls import path, include
-
-    urlpatterns = [
-        path("admin/",          admin.site.urls),
-        path("api/v1/",         include("game.urls")),   # REST endpoints
-        path("sse/",            include("game.urls")),   # SSE endpoint (same file)
-    ]
-
-    # ↑ Both prefixes land in this file. The SSE endpoint is defined with its
-    #   own full path below so it sits at /sse/leaderboard/{id}/ regardless.
-    #   Alternatively you can split into two include() calls pointing to two
-    #   separate url files — either approach works fine.
-
 URL map
 -------
     POST   /api/v1/auth/register/               RegisterView
@@ -128,26 +113,5 @@ sse_patterns = [
     ),
 ]
 
-# ── Combined urlpatterns ───────────────────────────────────────────────────────
-# config/urls.py does:
-#     path("api/v1/", include(("game.urls", "game"), namespace="game"))
-#     path("sse/",    include(("game.sse_urls", ...)))
-#
-# For simplicity with a single app, we expose both sets and let config/urls.py
-# pick them:
-#
-#     from game.urls import api_urlpatterns, sse_urlpatterns
-#     urlpatterns = [
-#         path("api/v1/", include(api_urlpatterns)),
-#         path("sse/",    include(sse_urlpatterns)),
-#     ]
-
 api_urlpatterns = auth_patterns + lobby_patterns + game_patterns + leaderboard_patterns
 sse_urlpatterns = sse_patterns
-
-# Default urlpatterns (used if config/urls.py does a plain include("game.urls"))
-urlpatterns = api_urlpatterns + [
-    # SSE sits at /sse/leaderboard/... even when included via api/v1/ prefix.
-    # Override in config/urls.py if you want a cleaner mount point.
-    path("sse/leaderboard/<int:table_id>/", SSELeaderboardView.as_view(), name="sse-leaderboard"),
-]
